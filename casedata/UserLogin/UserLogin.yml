@@ -1,0 +1,72 @@
+# 用例基本信息
+test_info:
+  # 用例标题，在报告中作为一级目录显示，用接口路径倒数第二个字段名作为标题
+  title: UserLogin
+  # 用例所属产品版本，不填则未None
+  product_version:
+  # 请求的域名，可写死，也可写在配置文件中，也可卸载用例中
+  host: ${host}$
+  # 请求地址，选填
+  address:
+  # 请求头，选填
+  headers: 11123333
+  # 请求协议
+  http_type: http
+  # 请求类型
+  request_type: POST
+  # 参数类型
+  parameter_type: json
+  # 是否需要获取cookie
+  cookies: False
+  # 是否为上传文件的接口
+  file: False
+  # 超时时间
+  timeout: 20
+
+# 测试用例
+test_case:
+  - test_name: 账号密码登录成功
+    # 用例ID，第一条用例必填，从1开始自增
+    case_id: 1
+    # 是否运行用例，不运行为False，空值或其他值则运行
+    is_run:
+    # 用例描述
+    info: 使用正确的账号密码登录
+    # 参数保存在单独文件中时，可通过文件路径引入参数
+    # 请求头，选填
+    headers: 777777
+    parameter:
+      account: "578458"
+      password: "5B51BD55D72D66985BF9B843C2315F56"
+      userId: 20163476
+      inviteCode:
+
+    # 期望结果
+    expect_result:
+      check_type: Regular_check  # 正则校验，多项匹配
+      expected_code:
+      expected_SubCode:
+      expected_result:
+        userId: 20163476
+        fxCode: 578458
+
+  - test_name:  账号密码登录失败
+    # 用例ID，第一条用例必填，从1开始自增
+    case_id: 2
+    # 是否运行用例，不运行为False，空值或其他值则运行
+    is_run:
+    # 用例描述
+    info: 使用错误的账号密码登录
+    # 参数保存在单独文件中时，可通过文件路径引入参数
+    parameter:
+      account: "578458"
+      password: "123456w"
+      userId: 20163476
+      inviteCode:
+        # 期望结果
+    expect_result:
+      check_type: Regular_check  # 正则校验，多项匹配
+      expected_code: -1
+      expected_SubCode: 123
+
+

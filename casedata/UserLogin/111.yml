@@ -1,0 +1,118 @@
+# 用例基本信息
+test_info:
+      # 用例标题，在报告中作为一级目录显示，用接口路径倒数第二个字段名作为标题
+      title: parkinside
+      # 用例所属产品版本，不填则为None
+      product_version: icm_v1.0
+      # 用例等级，优先级，包含blocker, critical, normal, minor，trivial几个不同的等级
+      case_level: blocker
+      # 请求的域名，可写死，也可写成模板关联host配置文件，也可写在用例中
+      host: ${host}$
+      # 请求地址 选填（此处不填，每条用例必填)
+      address: /${api}$
+      # 请求头 选填（此处不填，每条用例必填，如有的话)
+      headers: ${header1}$
+      # 请求协议
+      http_type: http
+      # 请求类型
+      request_type: POST
+      # 参数类型
+      parameter_type: json
+      # 是否需要获取cookie
+      cookies: False
+      # 是否为上传文件的接口
+      file: False
+      # 超时时间
+      timeout: 20
+      # 运行顺序，当前接口在本轮测试中的执行次序，1表示第一个运行，-1表示最后一个运行
+      run_order: 1
+
+# 测试用例 
+test_case:
+    - test_name: parkinside_1
+      # 用例ID，第一条用例必填，从1开始递增
+      case_id: 1
+      # 是否运行用例，不运行为 False ，空值或其它值则运行
+      is_run:
+      # 用例描述
+      info: parkinside test
+      # 参数保存在单独文件中时，可通过文件路径引入参数
+      parameter: data_parkinside.json
+
+      # 校验列表（期望结果）
+      check:
+            expected_result: result_parkinside.json   # 期望结果保存在单独文件中时，可通过文件路径引入
+            check_type: json                          # 校验类型，这里为json校验
+            expected_code: 200                        # 期望状态码
+
+      # 关联作用范围，True表示全局关联，其他值或者为空表示本模块关联
+      global_relevance:
+      # 关联键，此处提取的关联值可用于本模块后续的所有用例
+      relevance:
+            - userID
+            - vpl
+
+    - test_name: parkinside_2
+      # 第二条用例
+      case_id: 2
+      is_run:
+      info: parkinside
+      # 请求的域名
+      host: 127.0.0.1:12306
+      # 请求协议
+      http_type: http
+      # 请求类型
+      request_type: POST
+      # 参数类型
+      parameter_type: json
+      # 请求地址
+      address: /parkinside
+      # 请求头
+      headers:
+            Content-Type: application/json
+      # 请求参数
+      parameter:
+            sign: ${sign}$    # 通过变量引用关联值
+            vpl: AJ3585
+      # 是否需要获取cookie
+      cookies: False
+      # 是否为上传文件的接口
+      file: False
+      # 超时时间
+      timeout: 20
+
+      # 校验列表
+      check:
+            check_type: Regular_check   #正则校验，多项匹配
+            expected_code: 200
+            expected_result:
+                  - '"username": "wuya'      
+                  - '"Parking_time_long": "20小时18分钟"'
+                  - '"userID": 22'
+                  - '"Parking fee": "20\$"'
+
+      global_relevance:
+      # 关联键
+      relevance:
+
+    - test_name: parkinside_3
+      # 第三条用例
+      case_id: 3
+      # 是否运行用例
+      is_run:
+      # 用例描述
+      info: parkinside
+      # 请求参数
+      parameter:
+            vpl: ${vpl}$
+            userID: ${userID}$
+
+      # 校验列表
+      check:
+            expected_result: result_parkinside.json     # 期望结果保存在单独文件中时，可通过文件路径引入
+            check_type: only_check_status
+            expected_code: 400
+
+      global_relevance:
+      # 关联键
+      relevance:
