@@ -3,9 +3,6 @@ import os
 
 
 class InitializeYamlFile:
-    # root_path = "E:/Automation/FXAPITest/"
-    # case_path = root_path + 'casedata/UserLogin/'
-
     def init_Yaml(self, case_path, case_File_name):
         case_data_path = case_path + case_File_name + '.yml'
         case_data = open(case_data_path, 'r', encoding='utf-8')

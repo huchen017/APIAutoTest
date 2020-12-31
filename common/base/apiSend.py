@@ -1,5 +1,6 @@
 import logging
 import allure
+import ast
 from common.base.initializeYamlFile import InitializeYamlFile
 from common.confManage.confRead import ConfRead
 from common.base import apiMethod
@@ -70,16 +71,17 @@ def send_request(case_data, project_dict):
     header = get_header
     if get_header is None:
         header = ConfRead().get_header('header')
+        header = ast.literal_eval(header)
 
     if get_host is None:
-        get_host = ConfRead().get_header('test_host')
+        get_host = ConfRead().get_host('test_host')
         logging.debug("请求地址处理结果：{}".format(get_host))
         if get_host is None:
             raise Exception("请求地址为空：{}".format(get_host))
 
     parameter = case_data.get('parameter')
-    logging.ingo("请求接口：{}".format(case_data.get('test_name')))
-    logging.info("请求地址：{}".format((get_http_type+"://"+get_host+get_address)))
+    logging.info("请求接口：{}".format(case_data.get('test_name')))
+    logging.info("请求地址：{}".format((get_http_type+"://"+ get_host + get_address)))
     logging.info("请求header：{}".format(header))
     logging.info("请求参数：{}".format(parameter))
 
@@ -91,7 +93,7 @@ def send_request(case_data, project_dict):
                 allure.attach("用例描述：", case_data.get('test_info'))
                 allure.attach("请求地址：", get_http_type+"://"+get_host+get_address)
                 allure.attach("请求参数：", str(parameter))
-            result = apiMethod.post(header=header, address=get_http_type + "://" + get_host + get_address,
+            result = apiMethod.post(header=header, address=get_host + get_address,
                                     request_parameter_type=get_parameter_type,
                                     files=parameter,
                                     cookie=Cookie,
@@ -102,11 +104,11 @@ def send_request(case_data, project_dict):
                 allure.attach("用例描述：", case_data.get('test_info'))
                 allure.attach("请求地址：", get_http_type+"://"+get_host+get_address)
                 allure.attach("请求参数：", str(parameter))
-            result = apiMethod.post(header=header, address=get_http_type + "://" + get_host + get_address,
+            result = apiMethod.post(header=header, address=get_host + get_address,
                                     request_parameter_type=get_parameter_type,
                                     data=parameter,
                                     cookie=Cookie,
-                                    timeout = get_timeout)
+                                    timeout=get_timeout)
     return result
 
 

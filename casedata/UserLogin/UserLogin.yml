@@ -5,11 +5,11 @@ test_info:
   # 用例所属产品版本，不填则未None
   product_version:
   # 请求的域名，可写死，也可写在配置文件中，也可卸载用例中
-  host: ${host}$
+  host:
   # 请求地址，选填
-  address:
+  address: /api/UserLogin/AccountLogin
   # 请求头，选填
-  headers: 11123333
+  headers:
   # 请求协议
   http_type: http
   # 请求类型
@@ -34,7 +34,7 @@ test_case:
     info: 使用正确的账号密码登录
     # 参数保存在单独文件中时，可通过文件路径引入参数
     # 请求头，选填
-    headers: 777777
+    headers:
     parameter:
       account: "578458"
       password: "5B51BD55D72D66985BF9B843C2315F56"
@@ -42,10 +42,10 @@ test_case:
       inviteCode:
 
     # 期望结果
-    expect_result:
-      check_type: Regular_check  # 正则校验，多项匹配
-      expected_code:
-      expected_SubCode:
+    check:
+      check_type: json  # 正则校验，多项匹配
+      expected_code: 200
+      expected_SubCode: '0100100'
       expected_result:
         userId: 20163476
         fxCode: 578458
@@ -64,8 +64,8 @@ test_case:
       userId: 20163476
       inviteCode:
         # 期望结果
-    expect_result:
-      check_type: Regular_check  # 正则校验，多项匹配
+    check:
+      check_type: json  # 正则校验，多项匹配
       expected_code: -1
       expected_SubCode: 123
 

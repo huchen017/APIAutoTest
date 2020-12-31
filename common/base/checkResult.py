@@ -1,4 +1,4 @@
-
+import allure
 
 def check_json(expected_data, dst_data):
     '''
@@ -24,5 +24,37 @@ def check_json(expected_data, dst_data):
     else:
         raise Exception("JSON格式校验非Dict格式")
 
-def check_result():
-    if
+
+def check_result(case, code, subCode, data):
+    check = case['check']
+    # 不校验结果
+    if check['check_type'] == 'no_check':
+        with allure.step("不校验结果"):
+            pass
+
+    # json格式校验
+    elif check['check_type'] == 'json':
+        expected_result = check['expected_result']
+        with allure.step('JSON格式校验'):
+            allure.attach("期望code", str(check['expected_code']))
+            allure.attach("期望SubCode", str(check['expected_SubCode']))
+            allure.attach("实际data", str(code))
+            allure.attach("实际SubCode", str(subCode))
+            allure.attach("实际data", str(data))
+        if int(code) == check['expected_code']:
+            if str(subCode) == check['expected_SubCode']:
+                try:
+                    expected_result = check['expected_result']
+                except KeyError:
+                    pass
+            else:
+                raise Exception("subCode错误 \n {0} != {1}".format(subCode, check['expected_SubCode']))
+                if expected_result is not None:
+                    check_json(expected_result, data)
+        else:
+            raise Exception("code错误 \n {0} != {1}".format(code, check['expected_code']))
+
+
+
+
+
