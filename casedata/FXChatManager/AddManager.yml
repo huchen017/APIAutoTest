@@ -1,13 +1,13 @@
 # 用例基本信息
 test_info:
   # 用例标题，在报告中作为一级目录显示，用接口路径倒数第二个字段名作为标题
-  title: UserLogin
+  title: AddManager
   # 用例所属产品版本，不填则未None
   product_version:
   # 请求的域名，可写死，也可写在配置文件中，也可卸载用例中
   host:
   # 请求地址，选填
-  address: /api/UserLogin/AccountLogin
+  address: /api/FxChatManager/AddManager
   # 请求头，选填
   headers:
   # 请求协议
@@ -25,54 +25,28 @@ test_info:
 
 # 测试用例
 test_case:
-  # 前置条件，可运行多个接口，在用例前执行或用例后执行都可
-  - premise:
-      info:
-
-
-
-  - test_name: 账号密码登录成功
+  - test_name: 添加管理员成功
     # 用例ID，第一条用例必填，从1开始自增
     case_id: 1
     # 是否运行用例，不运行为False，空值或其他值则运行
     is_run:
     # 用例描述
-    info: 使用正确的账号密码登录
+    info: 添加管理员成功
     # 参数保存在单独文件中时，可通过文件路径引入参数
     # 请求头，选填
     headers:
     parameter:
-      account: "578458"
-      password: "5B51BD55D72D66985BF9B843C2315F56"
       userId: 20163476
-      inviteCode:
-
     # 期望结果
     check:
       check_type: json  # 正则校验，多项匹配
       expected_code: 200
-      expected_SubCode: '0100100'
-      expected_result:
-        userId: 20163476
-        fxCode: 578459
+      expected_SubCode: 'B303F00'
 
-  - test_name:  账号密码登录失败
-    # 用例ID，第一条用例必填，从1开始自增
-    case_id: 2
-    # 是否运行用例，不运行为False，空值或其他值则运行
-    is_run:
-    # 用例描述
-    info: 使用错误的账号密码登录
+  - teardown: 移除管理员
+    info: 移除新增的管理员
     # 参数保存在单独文件中时，可通过文件路径引入参数
     parameter:
-      account: "578458"
-      password: "123456w"
       userId: 20163476
-      inviteCode:
-        # 期望结果
-    check:
-      check_type: json  # 正则校验，多项匹配
-      expected_code: 200
-      expected_SubCode: '0101702'
 
 
